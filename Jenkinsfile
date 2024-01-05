@@ -21,7 +21,10 @@ pipeline {
         stage('Sonar Analysis') {
             environment {
                 scannerHome = tool 'SONAR_SCANNER' // nome do sonar declarado nas configurações do jenkins - em SonarQube Scanner
-                env.JAVA_HOME = tool 'JAVA_17'
+            }
+
+            steps {
+                withEnv(env.JAVA_HOME)
             }
             steps {
                 withSonarQubeEnv('SONAR_LOCAL') // nome definindo para o SonarQube installations nas configurações de sistema do jenkins
