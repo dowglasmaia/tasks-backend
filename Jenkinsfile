@@ -1,7 +1,9 @@
 pipeline {
     agent any
     stages {
-      
+        tools {
+            jdk 'jdk-11.0.2'
+        }
         //--Build --//
         stage(' Build Backend') {
             steps {
