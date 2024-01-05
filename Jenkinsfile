@@ -1,14 +1,12 @@
 pipeline {
     agent any
-    tools {
-            jdk 'jdk-11.0.2'
-    }
 
     stages {
         //--Build --//
         stage(' Build Backend') {
             steps {
                 // gerar no binario
+                agent { docker 'adoptopenjdk/openjdk11:jdk-11.0.9.1_1' }
                 bat 'mvn clean package -DskipTests=true'
             }
         }
