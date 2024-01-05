@@ -26,7 +26,7 @@ pipeline {
             }
 
             steps {
-                withEnv(["JAVA_HOME=${tool 'jdk-11.0.2'}", "PATH=${tool 'jdk-11.0.2'}/bin:${env.PATH}"]) {
+                withEnv(["JAVA_HOME=${tool 'JAVA_17'}", "PATH=${tool 'JAVA_17'}/bin:${env.PATH}"]) {
                     bat 'java -version'
                     bat 'javac -version'
                 }
