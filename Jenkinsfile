@@ -9,6 +9,8 @@ pipeline {
         SONARQUBE_QG = 'SONAR_LOCAL_QG'  // Nome da configuração do Quality Gate no Jenkins
         SONARQUBE_URL = 'http://localhost:9000/'  // URL do seu servidor SonarQube
         SONARQUBE_TOKEN = 'c163ea73dffd8fb0214151b4b59770fe234885d2'  // Token de acesso do SonarQube
+        TOMCAT_LOGIN = 'TOMCAT_LOGIN'
+        TOMCAT_URL = 'http://localhost:8001/'
     }
 
     stages {
@@ -45,7 +47,13 @@ pipeline {
 
         stage('Deploy Back-End') {
             steps {
-                deploy adapters: [tomcat8(credentialsId: 'TOMCAT_LOGIN', path: '', url: 'http://localhost:8001/')], contextPath: 'tasks-backend', war: 'target/tasks-backend.war'
+                deploy adapters: [tomcat8(credentialsId: "${TOMCAT_LOGIN}", path: '', url: "${TOMCAT_URL}")], contextPath: 'tasks-backend', war: 'target/tasks-backend.war'
+            }
+        }
+
+        stage('Deploy Front-End') {
+            steps {
+                deploy adapters: [tomcat8(credentialsId: "${TOMCAT_LOGIN}", path: '', url: "${TOMCAT_URL}")], contextPath: 'tasks', war: 'target/tasks.war'
             }
         }
     }
