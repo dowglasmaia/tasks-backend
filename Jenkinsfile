@@ -50,12 +50,6 @@ pipeline {
                 deploy adapters: [tomcat8(credentialsId: "${TOMCAT_LOGIN}", path: '', url: "${TOMCAT_URL}")], contextPath: 'tasks-backend', war: 'target/tasks-backend.war'
             }
         }
-
-        stage('Deploy Front-End') {
-            steps {
-                deploy adapters: [tomcat8(credentialsId: "${TOMCAT_LOGIN}", path: '', url: "${TOMCAT_URL}")], contextPath: 'tasks', war: 'target/tasks.war'
-            }
-        }
     }
 }
 
