@@ -1,6 +1,11 @@
 pipeline {
     agent any
     stages {
+        stage('Which Java?') {
+            steps {
+                sh 'java --version'
+            }
+        }
         //--Build --//
         stage(' Build Backend') {
             steps {
@@ -24,11 +29,8 @@ pipeline {
             }
 
             steps {
-                withEnv(env.JAVA_HOME)
-            }
-            steps {
-                withSonarQubeEnv('SONAR_LOCAL') // nome definindo para o SonarQube installations nas configurações de sistema do jenkins
-                {
+                // nome definindo para o SonarQube installations nas configurações de sistema do jenkins
+                withSonarQubeEnv('SONAR_LOCAL') {
                     bat "${scannerHome}/bin/sonar-scanner -e -Dsonar.projectKey=Deploy_Back -Dsonar.host.url=http://localhost:9000 -Dsonar.login=c163ea73dffd8fb0214151b4b59770fe234885d2 -Dsonar.java.binaries=target -Dsonar.coverage.exclusions=**/.mvn/**,**/src/test/**,**model/**,**Application.java"
                 }
             }
