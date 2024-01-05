@@ -51,11 +51,7 @@ pipeline {
             }
         }
 
-        stage('Deploy Front-End') {
-            steps {
-                deploy adapters: [tomcat8(credentialsId: "${TOMCAT_LOGIN}", path: '', url: "${TOMCAT_URL}")], contextPath: 'tasks', war: 'target/tasks.war'
-            }
-        }
+       
     }
 }
 
