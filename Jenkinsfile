@@ -6,7 +6,7 @@ pipeline {
         stage(' Build Backend') {
             steps {
                 // gerar no binario
-                
+
                 bat 'mvn clean package -DskipTests=true'
             }
         }
@@ -26,7 +26,10 @@ pipeline {
             }
 
             steps {
-                agent { any 'adoptopenjdk/openjdk11:jdk-11.0.9.1_1' }
+                withEnv(["JAVA_HOME=${tool 'jdk-11.0.2'}", "PATH=${tool 'jdk-11.0.2'}/bin:${env.PATH}"]) {
+                    bat 'java -version'
+                    bat 'javac -version'
+                }
                 // nome definindo para o SonarQube installations nas configurações de sistema do jenkins
                 withSonarQubeEnv('SONAR_LOCAL') {
                     bat "${scannerHome}/bin/sonar-scanner -e -Dsonar.projectKey=Deploy_Back -Dsonar.host.url=http://localhost:9000 -Dsonar.login=c163ea73dffd8fb0214151b4b59770fe234885d2 -Dsonar.java.binaries=target -Dsonar.coverage.exclusions=**/.mvn/**,**/src/test/**,**model/**,**Application.java"
