@@ -28,21 +28,17 @@ pipeline {
 
         stage('Sonar Analysis') {
             steps {
-                script {
                     withSonarQubeEnv(SONARQUBE_LOCAL) {
                         bat "${SCANNER_HOME}/bin/sonar-scanner -e -Dsonar.projectKey=Deploy_Back -Dsonar.host.url=${SONARQUBE_URL} -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.java.binaries=target -Dsonar.coverage.exclusions=**/.mvn/**,**/src/test/**,**model/**,**Application.java"
                     }
-                }
             }
         }
 
         stage('Quality Gate') {
             steps {
-                script {
-                    def qg = waitForQualityGate()
-                    if (qg.status != 'OK') {
-                        error "Pipeline aborted due to Quality Gate failure: ${qg.status}"
-                    }
+                sleep(5)
+                timeout(time: 1, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
                 }
             }
         }
